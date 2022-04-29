@@ -1,15 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from . models import *
-import easygui
+
 
 # Create your views here.
 def login(request):
     if request.method=='POST':
         if Todosign.objects.filter(user_name=request.POST['user_name'],password=request.POST['password']).exists():
             usersign=Todosign.objects.filter(user_name=request.POST['user_name'],password=request.POST['password'])
-            easygui.msgbox("Welcome")
-            return render(request,'dashboard.html',{'usersign':usersign})
+            return render(request,'dashboard.html',{'usersign':usersign)
         else:
             context={'msg':"wrong credential"}  
             return render(request,'login.html',context)  
@@ -18,14 +17,14 @@ def login(request):
 def sign(request):
     if request.method=="POST":
         if Todosign.objects.filter(email_id=request.POST['email_id']):
-            easygui.msgbox("Mail already taken")
+            return render(request,'sign.html',{'msg':"already exits mail"})
+            
         else:
             usersign=Todosign()
             usersign.user_name=request.POST['user_name']
             usersign.password=request.POST['password']
             usersign.email_id=request.POST['email_id']
             usersign.save()
-            easygui.msgbox("success")
             return redirect(login)
     return render(request,'sign.html')
 
@@ -37,7 +36,6 @@ def dashboard(request):
         mytask.percentages=request.POST['percentages']
         mytask.dates=request.POST['dates']
         mytask.save()
-        easygui.msgbox("Task added")
         return redirect(dashboard)
     return render(request,'dashboard.html',{'mytask':mytask})    
 
@@ -50,7 +48,6 @@ def updateedit(request,id):
     percentages=request.POST['percentages']
     dates=request.POST['dates']
     edit=usertask.objects.all().filter(id=id).update(tasks=tasks,percentages=percentages,dates=dates)
-    easygui.msgbox("Updated")
     return redirect(dashboard)
 
 def delete(request,id):
